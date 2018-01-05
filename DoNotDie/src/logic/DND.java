@@ -22,8 +22,7 @@ public class DND
 	// Makes calls to all other driver methods
 	public static void main (String [] args)
 	{
-
-		Map map = new Map ();
+		Map map = new Map (14, 5);
 		Character p1 = null;
 		String input = "";
 		String prompt = "";
@@ -44,6 +43,8 @@ public class DND
 		
 		slowPrint ("Welcome to Do Not Die, 1st Edition!!\n" +
 				"We hope you enjoy our game!! :D\n\n", textspeeds [textchoice]);
+		
+		//map.printMap ();
 		
 		// Main menu loop
 		while (inputvalid (input))
@@ -151,6 +152,9 @@ public class DND
 				{
 					// Inspect room
 					//map.current.printDescription ();
+					
+					slowPrint ("\nRoom " + map.current.getRoomNum () + "\n", textspeeds [textchoice]);
+					
 					// If room has treasures, list them and allow player to pick one up per inspect action
 					if (map.current.hasTreasures ())
 					{
@@ -384,7 +388,7 @@ public class DND
 					if (map.current.connections [5] >= 0)
 						map.moveDown ();
 					else
-						slowPrint ("I'd let you go down in flames, but there's no opening down.../n" +
+						slowPrint ("I'd let you go down in flames, but there's no opening down...\n" +
 								"And no flames...\n", textspeeds [textchoice]);
 					break;
 				}

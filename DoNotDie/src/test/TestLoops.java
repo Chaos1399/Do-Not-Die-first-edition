@@ -17,11 +17,11 @@ public class TestLoops {
 		
 		// Treasure Loop Test
 		// Room Initialized with 1 Enemy, 1 Treasure, Level 1, and room connections 1
-		room1 = new logic.Room(1, 1, 1, 1, 1, 1, 1, 1, 1);
+		room1 = new logic.Room(1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 	
 		// Enemy Loop Test
 		// Room Initialized with 1 Enemy, 1 Treasure, Level 1, and room connections 1
-		room2 = new logic.Room(5, 0, 1, 1, 1, 1, 1, 1, 1);
+		room2 = new logic.Room(5, 0, 1, 1, 1, 1, 1, 1, 1, 2);
 		
 		
 		

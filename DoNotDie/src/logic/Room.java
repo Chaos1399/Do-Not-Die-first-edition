@@ -5,6 +5,7 @@ import java.util.Random;
 public class Room
 {
 	private String description;
+	private int roomnum;
 	public Character [] enemies;
 	public Treasure [] treasures;
 	public int numenemies;
@@ -15,7 +16,7 @@ public class Room
 	
 	// No default constructor because this cannot be randomized.
 	// Pass in number of enemies, number of treasures, level of room, and all the room connections in order
-	public Room (int numenem, int numtre, int level, int back, int l, int c, int r, int u, int d)
+	public Room (int numenem, int numtre, int level, int back, int l, int c, int r, int u, int d, int numroom)
 	{
 		Random rand = new Random ();
 		int seed = rand.nextInt (3), race;
@@ -62,25 +63,20 @@ public class Room
 		numenemies = numenem;
 		numtreasures = numtre;
 		description = "";
+		roomnum = numroom;
 	}
 	
 	// Methods for printing
 	// Prints room connections. Used for testing constructor and as a failsafe
 	public String toString ()
 	{
-		String ret = "Connections:";
-		if (connections [0] != -1)
-			ret += "\nBack: " + connections [0];
-		if (connections [1] != -1)
-			ret += "\nLeft: " + connections [1];
-		if (connections [2] != -1)
-			ret += "\nCenter: " + connections [2];
-		if (connections [3] != -1)
-			ret += "\nRight: " + connections [3];
-		if (connections [4] != -1)
-			ret += "\nUp: " + connections [4];
-		if (connections [5] != -1)
-			ret += "\nDown: " + connections [5];
+		String ret = "Room " + roomnum + " Connections:";
+		ret += "\nBack: " + ((connections [0] != -1)? connections [0] : "No");
+		ret += "\nLeft: " + ((connections [1] != -1)? connections [1] : "No");
+		ret += "\nCenter: " + ((connections [2] != -1)? connections [2] : "No");
+		ret += "\nRight: " + ((connections [3] != -1)? connections [3] : "No");
+		ret += "\nUp: " + ((connections [4] != -1)? connections [4] : "No");
+		ret += "\nDown: " + ((connections [5] != -1)? connections [5] : "No");
 		
 		return ret;
 	}
@@ -182,4 +178,7 @@ public class Room
 		
 		return true;
 	}
+	
+	// Show the player the room number, to alleviate confusion
+	public int getRoomNum () { return roomnum; }
 }

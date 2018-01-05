@@ -19,7 +19,7 @@ public class TestCharacter
 		underheals = 1;
 		p1 = new logic.Character ("Chaos", 2, true, 2, 2, 2, 2, 2, 2, 2, 1, true);
 		item = new logic.Weapon (5, 0);
-		room = new logic.Room (1, 1, 1, -1, -1, -1, -1, -1, -1);
+		room = new logic.Room (1, 1, 1, -1, -1, -1, -1, -1, -1, 0);
 	}
 
 	@Test

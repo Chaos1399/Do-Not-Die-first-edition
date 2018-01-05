@@ -17,10 +17,10 @@ public class TestIntegration {
     logic.Gauntlets gauntlets;
 	
 	public TestIntegration() {
-		room1 = new Room(1, 1, 1, 1, 1, 1, 1, 1, 1);
-		room2 = new Room(5, 0, 1, 1, 1, 1, 1, 1, 1);
-		room3 = new Room(0, 0, 1, 1, 1, 1, 1, 1, 1);
-		room4 = new Room(0, 0, 1, -1, -1, -1, -1, -1, -1);
+		room1 = new Room(1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+		room2 = new Room(5, 0, 1, 1, 1, 1, 1, 1, 1, 2);
+		room3 = new Room(0, 0, 1, 1, 1, 1, 1, 1, 1, 3);
+		room4 = new Room(0, 0, 1, -1, -1, -1, -1, -1, -1, 4);
       p1 = new logic.Character ("Chaos", 2, true, 2, 2, 2, 2, 2, 2, 2, 1, true);
 	}
 	
