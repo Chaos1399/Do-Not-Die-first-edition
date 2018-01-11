@@ -70,7 +70,7 @@ public class Room
 	// Prints room connections. Used for testing constructor and as a failsafe
 	public String toString ()
 	{
-		String ret = "Room " + roomnum + " Connections:";
+		String ret = "Room " + roomnum + "\nConnections:";
 		ret += "\nBack: " + ((connections [0] != -1)? connections [0] : "No");
 		ret += "\nLeft: " + ((connections [1] != -1)? connections [1] : "No");
 		ret += "\nCenter: " + ((connections [2] != -1)? connections [2] : "No");

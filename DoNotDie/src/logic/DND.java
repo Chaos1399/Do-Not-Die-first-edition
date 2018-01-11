@@ -44,8 +44,6 @@ public class DND
 		slowPrint ("Welcome to Do Not Die, 1st Edition!!\n" +
 				"We hope you enjoy our game!! :D\n\n", textspeeds [textchoice]);
 		
-		//map.printMap ();
-		
 		// Main menu loop
 		while (inputvalid (input))
 		{
@@ -204,7 +202,7 @@ public class DND
 						}
 					}
 					else
-						slowPrint ("Nothing in the room\n", textspeeds [textchoice]);
+						slowPrint ("\nNothing in the room\n", textspeeds [textchoice]);
 					break;
 				}
 				case ("n"):

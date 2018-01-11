@@ -54,6 +54,9 @@ public class Character implements Comparable <Character>
 		Speed = SPD;
 		Luck = LCK;
 		
+		for (int i = 0; i < 6; i++)
+			equipped [i] = null;
+		
 		if (r == 1)
 		{
 			AC = 3;
@@ -889,7 +892,7 @@ public class Character implements Comparable <Character>
 	// If none equipped in that slot, says None, does not skip
 	public void equippedCheck (Boolean withnums, int len)
 	{
-		String [] slots = {"Boots: ", "Greaves: ", "Cuirass: ", "Gauntlets: ", "Helm: ", "Weapon: "};
+		String [] slots = {"Boots:     ", "Greaves:   ", "Cuirass:   ", "Gauntlets: ", "Helm:      ", "Weapon:    "};
 		
 		DND.slowPrint ("Equipped:\n", len);
 		
@@ -948,30 +951,35 @@ public class Character implements Comparable <Character>
 				if (equipped [0] != null)
 					unequip (0);
 				equipped [0] = item;
+				//AC += ((Armor) item.getType ()).getAR ();
 			}
 			else if (item.getType() instanceof Greaves)
 			{
 				if (equipped [1] != null)
 					unequip (1);
 				equipped [1] = item;
+				//AC += ((Armor) item.getType ()).getAR ();
 			}
 			else if (item.getType() instanceof Cuirass)
 			{
 				if (equipped [2] != null)
 					unequip (2);
 				equipped [2] = item;
+				//AC += ((Armor) item.getType ()).getAR ();
 			}
 			else if (item.getType() instanceof Gauntlets)
 			{
 				if (equipped [3] != null)
 					unequip (3);
 				equipped [3] = item;
+				//AC += ((Armor) item.getType ()).getAR ();
 			}
 			else if (item.getType() instanceof Helm)
 			{
 				if (equipped [4] != null)
 					unequip (4);
 				equipped [4] = item;
+				//AC += ((Armor) item.getType ()).getAR ();
 			}
 			
 			AC += ((Armor) item.getType ()).getAR ();
@@ -996,9 +1004,9 @@ public class Character implements Comparable <Character>
 		equipped [index] = null;
 		
 		if (item instanceof Armor)
-			AC += ((Armor) item.getType ()).getAR ();
+			AC -= ((Armor) item.getType ()).getAR ();
 		else if (item instanceof Weapon)
-			damage += ((Weapon) item.getType ()).getDamage ();
+			damage -= ((Weapon) item.getType ()).getDamage ();
 		else
 			return;
 		

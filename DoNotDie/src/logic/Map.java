@@ -11,15 +11,65 @@ public class Map
 	// Default constructor creates randomized Map with 14 rooms, at level 5
 	public Map ()
 	{
+		int roomnum = 14;
+		int level = 5;
+		int b;
+		int l;
+		int c;
+		int r;
+		int u;
+		int d;
+		int [][] Bcons = new int [2][7]; 
+		int [][] Lcons = new int [2][7]; 
+		int [][] Ucons = new int [2][7]; 
+		Random roller = new Random ();
 		
+		layout = new Room [roomnum];
+		
+		resetArr (Bcons [0]);
+		resetArr (Bcons [1]);
+		resetArr (Lcons [0]);
+		resetArr (Lcons [1]);
+		resetArr (Ucons [0]);
+		resetArr (Ucons [1]);
+		
+		// Create randomized Back/Center connections
+		Bcons [0] = randomizeArr (roller, roomnum, Bcons [0], null);
+		Bcons [1] = randomizeArr (roller, roomnum, Bcons [1], Bcons [0]);
+		// Create randomized Left/Right connections
+		Lcons [0] = randomizeArr (roller, roomnum, Lcons [0], null);
+		Lcons [1] = randomizeArr (roller, roomnum, Lcons [1], Lcons [0]);
+//		// Create randomized Up/Down connections
+		Ucons [0] = randomizeArr (roller, roomnum, Ucons [0], null);
+		Ucons [1] = randomizeArr (roller, roomnum, Ucons [1], Lcons [0]);
+		
+		// Create rooms with the randomized connections
+		for (int i = 0; i < roomnum; i++)
+		{
+			b = inArr (i, Bcons [0]);
+			l = inArr (i, Lcons [0]);
+			c = inArr (i, Bcons [1]);
+			r = inArr (i, Lcons [1]);
+			u = inArr (i, Ucons [0]);
+			d = inArr (i, Ucons [1]);
+			
+			if (b >= 0) b = (Bcons [1][b]);
+			if (l >= 0) l = (Lcons [1][l]);
+			if (c >= 0) c = (Bcons [0][c]);
+			if (r >= 0) r = (Lcons [0][r]);
+			if (u >= 0) u = (Ucons [1][u]);
+			if (d >= 0) d = (Ucons [0][d]);
+			
+			layout [i] = new Room (roller.nextInt (level / 2), roller.nextInt (level), level, b, l, c, r, u, d, i);
+		}
+		
+		current = layout [0];
+
 	}
 	
 	// Procedural map generation. Pass in the number of rooms, and the level of the rooms
 	public Map (int roomnum, int level)
 	{
-		int [][] Bcons;
-		int [][] Lcons;
-		int [][] Ucons;
 		int len = roomnum / 2;
 		int b;
 		int l;
@@ -27,13 +77,12 @@ public class Map
 		int r;
 		int u;
 		int d;
-		
+		int [][] Bcons = new int [2][len];
+		int [][] Lcons = new int [2][len];
+		int [][] Ucons = new int [2][len];
 		Random roller = new Random ();
 		
 		layout = new Room [roomnum];
-		Bcons = new int [2][len];
-		Lcons = new int [2][len];
-		Ucons = new int [2][len];
 		
 		// Initialize the connection arrays
 		resetArr (Bcons [0]);
@@ -70,7 +119,7 @@ public class Map
 			if (u >= 0) u = (Ucons [1][u]);
 			if (d >= 0) d = (Ucons [0][d]);
 			
-			layout [i] = new Room (roller.nextInt (2), roller.nextInt (2), level, b, l, c, r, u, d, i);
+			layout [i] = new Room (roller.nextInt (level / 2), roller.nextInt (level), level, b, l, c, r, u, d, i);
 		}
 		
 		current = layout [0];
