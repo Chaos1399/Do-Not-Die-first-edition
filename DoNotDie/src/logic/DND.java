@@ -1048,7 +1048,7 @@ public class DND
  		return exists;
 	}
 	
-	// Battle driver method
+	// Battle driver
 	// Takes in the player, and the current map.
 	// Returns true if the player died
 	static Boolean battle (Character p1, Map map, int len)
@@ -1139,6 +1139,7 @@ public class DND
 			// Player turn
 			if (order [turn].getName () != null)
 			{
+				// Continue loop until player chooses to attack
 				while (!input.equals ("a") && !input.equals ("attack"))
 				{
 					slowPrint ("\nIt's your turn, what do you want to do?", len);
@@ -1147,6 +1148,7 @@ public class DND
 					if (!inputvalid (input = input ().toLowerCase ()))
 						break;
 					
+					// Player chose to attack
 					if (input.equals ("a") || input.equals ("attack"))
 					{
 						slowPrint ("\nAttack who?\n", len);
@@ -1204,8 +1206,9 @@ public class DND
 						
 						if (roll > enemy.getAC ())
 						{
-							slowPrint ("\nExcellent, that's a success!\nNow roll for damage.\n", len);
+							slowPrint ("\n\nExcellent, you hit them!\nNow roll for damage.\n\n", len);
 							roll = p1.rolld20 ();
+							
 							if (roll == 20)
 							{
 								slowPrint ("\nCritical success! Double damage!\n", len);
@@ -1237,126 +1240,138 @@ public class DND
 						input = "";
 						break;
 					}
+					// Player chose to check inventory
 					else if (input.equals ("c") || input.equals ("check") || input.equals ("check bag"))
-						// Check inventory
 						p1.inventoryCheck (len);
+					// Player chose to check enemy description. Has no use other than amusement
 					else if (input.equals ("p") || input.equals ("perception check"))
-						// Check enemy description. Has no use other than amusement
 						for (int i = 0; i < enemies.length; i++)
 							enemies [i].printDescription (len);
+					// Catch-all failsafe
 					else
-						// Catch-all failsafe
 						slowPrint ("Invalid input.\n", len);
 				}
 			}
+			// Enemy turn
 			else
 			{
-					slowPrint ("\nIt's " + order [turn].getRace () + "'s turn.\n", len);
-					Character curEnemy = order[turn];
-					boolean enemyHit = false;
-					int enemyDmg = 0;
-					
-					int attackRoll = curEnemy.rolld20();
-					slowPrint("The enemy rolled a " + attackRoll + " against your AC\n", len);
-					
-					//Handles the enemy's attack roll
-					if (attackRoll > p1.getAC())
+				slowPrint ("\nIt's the " + order [turn].getRace () + "'s turn.\n", len);
+				Character curEnemy = order[turn];
+				int enemyDmg = 0;
+				int ACRoll = curEnemy.rolld20();
+				int attackRoll = curEnemy.rolld20();
+				String pronoun1;
+				String pronoun2;
+				
+				if (curEnemy.getGenderbool())
+				{
+					pronoun1 = "his";
+					pronoun2 = "he";
+				}
+				else
+				{
+					pronoun1 = "her";
+					pronoun2 = "she";
+				}
+				
+				slowPrint ("The enemy rolled a " + ACRoll + " versus your AC.\n", len);
+				
+				// This handles an enemy's attack if they hit
+				if (ACRoll > p1.getAC())
+				{
+					slowPrint ("\nThat hit.", len);
+					if (attackRoll == 20)
 					{
-						enemyHit = true;
+						slowPrint ("\nDamn son, " + pronoun2 + " get you gooooooooood!", len);
+						enemyDmg = curEnemy.getDamage() / 2;
 					}
-					
-					//This handles an enemy's attack if they hit
-					if (enemyHit)
-					{
-						if(attackRoll == 20)
-						{
-							slowPrint("Damn Son! They got you gooooooooood!\n", len);
-							enemyDmg = curEnemy.getDamage() / 2;
-						}
-						else
-						{
-							enemyDmg = curEnemy.getDamage() / 3;
-						}
-						
-						p1.attacked(enemyDmg);
-						slowPrint("You've Been Struck for " + enemyDmg + "! You should get that checked!\n\n", len);
-								
-						//The player just died and handles what kind of enemy killed them
-						if(p1.getHealth() == 0)
-						{
-							if(curEnemy.getRace() == "Human")
-							{
-								slowPrint("The Human rolls into your blind spot and swings his sword to end your life.\n"
-										+ "Unfortunately for you, he has succeeded.\n", len);
-							}
-							else if(curEnemy.getRace() == "Elf")
-							{
-								slowPrint("In all the majesticness of an Elf's swiftness, this Elf raises his bow\n"
-										+ "and looses two arrows straight in your heart!\n"
-										+ "Today is not your day...\n", len);
-							}
-							else if(curEnemy.getRace() == "Orc")
-							{
-								slowPrint("The brute Orc rushes you, slams you against a wall, lifts you into the "
-										+ "air, tears you in half, and flings your carcases across the room!\n"
-										+ "The rats will feast tonight!\n", len); 
-							}
-							else if(curEnemy.getRace() == "Gnome")
-							{
-								slowPrint("This Gnome while small was quick because before you knew it, it had\n"
-										+ "sliced the back of both your knees and slit your throat!\n"
-										+ "You lay there bleeding out, watching as he robs you and skips away!", len);
-							}
-							else if(curEnemy.getRace() == "Dwarf")
-							{
-								slowPrint("This mighty Dwarf has gotten the best of you! Her mighty warcry offset\n"
-										+ "you just long enough so that her axe throw would meet its target... your face.\n", len);
-							}
-							else if(curEnemy.getRace() == "DragonBorn")
-							{
-								slowPrint("You swear the last thing you heard was FUS-RO-DA, but you get the faint\n"
-										+ "memory of also taking an arrow to the knee...\n", len);
-							}
-							else if(curEnemy.getRace() == "Half-Troll")
-							{
-								slowPrint("The Half-Troll removes its disguise to reveal three dwarfs who rush you\n"
-										+ "and kick you in the shins until you die of laughter!\n", len);
-							}
-							else if(curEnemy.getRace() == "Lizard-Folk")
-							{
-								slowPrint("After slashing your guts so they fall out, it knocks you onto the ground\n"
-										+ "with a tailwhip directly to the chest, and proceeds to eat your\n"
-										+ "insides like a fancy afternoon snack!", len);
-							}
-							else if(curEnemy.getRace() == "Cat-Folk")
-							{
-								slowPrint("Welp she clawed your face off... Still think cats are cute?\n", len);
-							}
-							else if(curEnemy.getRace() == "Tiefling")
-							{
-								slowPrint("The Tiefling shot a giant fireball at you turning you into a pile\n"
-										+ "of smouldering ashe! I told you it was a bad idea o say you were cold.\n", len);
-							}
-							else
-							{
-								slowPrint("You tripped and fell off a cliff while running away from the enemy like a little baby.\n"
-										+ "On the express way down the cliffside, you broke your face, and bent just about every\n"
-										+ "limb in your body in a direction it was never intended to go.\n", len);
-							}
-							slowPrint("You are dead. Game Over!\n\n", len);
-						}
-						//Print the player's health if they are not dead yet
-						else
-						{
-							slowPrint("Your new health is " + p1.getHealth() + "\n\n", len);
-						}
-					}
-					//The enemy's attack roll was not good enough to beat the player's AC
 					else
 					{
-						slowPrint("The enemy ain't got nothing on your AC!\n\n", len);
+						enemyDmg = curEnemy.getDamage() / 3;
+					}
+					
+					p1.attacked (enemyDmg);
+					slowPrint ("\nYou've been struck for " + enemyDmg + "\n", len);
+							
+					// The player just died, print an appropriate message for the enemy that killed them
+					if (p1.getHealth() == 0)
+					{
+						if (curEnemy.getRace() == "Human")
+						{
+							slowPrint ("\nThe Human attempts to roll into your blind spot and swing " + pronoun1 +
+									" sword to end your life.\nUnfortunately for you, " + pronoun2 +
+									" has succeeded.\n", len);
+						}
+						else if (curEnemy.getRace() == "Elf")
+						{
+							slowPrint ("\nIn all the majestic grace of an Elf, " + pronoun2 + " raises " + pronoun1 +
+									" bow\nand looses two arrows straight through your heart!\n" +
+									"Today is not your day...\n", len);
+						}
+						else if (curEnemy.getRace() == "Orc")
+						{
+							slowPrint ("\nThe brute Orc rushes you, slams you against a wall, lifts you into the " +
+									"air, tears you in half, and flings your carcass across the room!\n" +
+									"The rats will feast tonight!\n", len); 
+						}
+						else if (curEnemy.getRace() == "Gnome")
+						{
+							slowPrint ("\nThis Gnome, while small, was quick because before you knew it, " + pronoun2 +
+									" had\nsliced the back of both your knees and slit your throat!\n" +
+									"You lay there bleeding out, watching as " + pronoun2 +
+									" robs you and skips away!", len);
+						}
+						else if (curEnemy.getRace() == "Dwarf")
+						{
+							slowPrint ("\nThis mighty Dwarf has gotten the best of you!\nThe mighty warcry " + pronoun2 +
+									" loosed unsettled you\njust long enough so that " + pronoun1 + " axe throw" +
+									" would meet its target... your face.\n", len);
+						}
+						else if (curEnemy.getRace() == "DragonBorn")
+						{
+							slowPrint ("\nYou swear the last thing you heard was FUS-RO-DA, but you get the faint\n"
+									+ "memory of also taking an arrow to the knee...\n", len);
+						}
+						else if (curEnemy.getRace() == "Half-Troll")
+						{
+							slowPrint ("\nThe Half-Troll removes its disguise to reveal three dwarfs who rush you\n"
+									+ "and kick you in the shins until you die of laughter!\n", len);
+						}
+						else if (curEnemy.getRace() == "Lizard-Folk")
+						{
+							slowPrint ("\nAfter slashing your guts so they fall out, " + pronoun2 +
+									" knocks you onto the ground\nwith a tailwhip directly to the chest," +
+									" and proceeds to eat\nyour insides like a fancy afternoon snack!", len);
+						}
+						else if (curEnemy.getRace() == "Cat-Folk")
+						{
+							slowPrint ("\nWelp, " + pronoun2 + " clawed your face off..." +
+									" Still think cats are cute?\n", len);
+						}
+						else if (curEnemy.getRace() == "Tiefling")
+						{
+							slowPrint ("\nThe Tiefling shot a giant fireball at you, turning you into a pile\n" +
+									"of smoldering ash! I told you it was a bad idea to say you were cold!\n", len);
+						}
+						else
+						{
+							slowPrint ("\nYou tripped and fell off a cliff while running away from the enemy," +
+									" like a little baby.\nOn the express way down the cliffside, you broke your face," +
+									" and bent every\nlimb in a direction it was never intended to go.\n", len);
+						}
+						slowPrint ("\nYou are dead. Game Over!\n", len);
+					}
+					// Print the player's health if they are not dead yet
+					else
+					{
+						slowPrint ("\nYou should have that checked!\nYour new health is " + p1.getHealth() + "\n\n", len);
 					}
 				}
+				// The enemy's attack roll was not good enough to beat the player's AC
+				else
+					slowPrint ("\nThe " + curEnemy.getRace() + " just attacked the floor beneath " + pronoun1 +
+							" feet for some reason...\nSo, uhhhh, " + pronoun2 + " didn't hit you.\n", len);
+			}
 			
 			// Standard wraparound to get back to index 0, start the order over again
 			if ((turn + 1) > order.length)

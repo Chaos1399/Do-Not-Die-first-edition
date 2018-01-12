@@ -951,35 +951,30 @@ public class Character implements Comparable <Character>
 				if (equipped [0] != null)
 					unequip (0);
 				equipped [0] = item;
-				//AC += ((Armor) item.getType ()).getAR ();
 			}
 			else if (item.getType() instanceof Greaves)
 			{
 				if (equipped [1] != null)
 					unequip (1);
 				equipped [1] = item;
-				//AC += ((Armor) item.getType ()).getAR ();
 			}
 			else if (item.getType() instanceof Cuirass)
 			{
 				if (equipped [2] != null)
 					unequip (2);
 				equipped [2] = item;
-				//AC += ((Armor) item.getType ()).getAR ();
 			}
 			else if (item.getType() instanceof Gauntlets)
 			{
 				if (equipped [3] != null)
 					unequip (3);
 				equipped [3] = item;
-				//AC += ((Armor) item.getType ()).getAR ();
 			}
 			else if (item.getType() instanceof Helm)
 			{
 				if (equipped [4] != null)
 					unequip (4);
 				equipped [4] = item;
-				//AC += ((Armor) item.getType ()).getAR ();
 			}
 			
 			AC += ((Armor) item.getType ()).getAR ();
